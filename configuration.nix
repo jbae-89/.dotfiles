@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -27,30 +27,29 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-# Power Management
-powerManagement.enable = true;
+  # Power Management
+  powerManagement.enable = true;
 
-
-# Nvidia Drivers
-hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
-hardware.nvidia.open = true;
-services.xserver.videoDrivers = [ "nvidia" ];
+  # Nvidia Drivers
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
+  hardware.nvidia.open = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # Bluetooth hardware configuration
 
   hardware.bluetooth = {
-  enable = true;
-  powerOnBoot = true;
-  settings = {
-    General = {
-#      Experimental = true;  # Enables features like battery level display
-#      FastConnectable = true;
-    };
-    Policy = {
-      AutoEnable = true;
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        #      Experimental = true;  # Enables features like battery level display
+        #      FastConnectable = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
     };
   };
-};   
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -78,7 +77,6 @@ services.xserver.videoDrivers = [ "nvidia" ];
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
-
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
@@ -92,11 +90,10 @@ services.xserver.videoDrivers = [ "nvidia" ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
- 
 
   # Enable IVPN service
 
- services.ivpn.enable = true;
+  services.ivpn.enable = true;
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -120,61 +117,63 @@ services.xserver.videoDrivers = [ "nvidia" ];
   users.users.josh = {
     isNormalUser = true;
     description = "josh";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
 
     packages = with pkgs; [
     ];
 
   };
 
-  programs.nano.enable = false;   
+
+  programs.steam.enable = true;
+  programs.nano.enable = false;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
 
-# Install these with home manager	
-	# Internet
-	brave
+    # Install these with home manager
+    # Internet
+    brave
 
-	
-	# Media
-	vlc
+    # Media
+    vlc
 
-	# System
-	btop 
-	bluez
-	micro
-  git
+    # System
+    btop
+    bluez
+    micro
+    git
 
-  
-	
- ];
+  ];
 
-# Additional Services
-#services.ivpn.enable = true;
+  # Additional Services
+  #services.ivpn.enable = true;
 
+  # Exclusions
 
-# Exclusions
+  services.xserver.excludePackages = with pkgs; [
+    xterm
+  ];
 
-
-services.xserver.excludePackages = with pkgs; [
-xterm
-];
-
-environment.plasma6.excludePackages = with pkgs.kdePackages; [
-okular
-kate	  
-elisa
-];   
-
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    okular
+    kate
+    elisa
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

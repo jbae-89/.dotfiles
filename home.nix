@@ -15,73 +15,76 @@
   # release notes.
   home.stateVersion = "25.11"; # Please read the comment before changing.
 
-
   # Allow unfree Moved to configuration.nix
-#  nixpkgs.config.allowUnfree = true;
+  #  nixpkgs.config.allowUnfree = true;
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
 
-# Install these with home manager	
+    # Install these with home manager
 
-	# Internet
-	webcord
+    # Internet
+    webcord
 
-	# Programming (Multi-Lang)
-	vscode
-	gcc
-	
-	# Rust
-	rustc
-	cargo	
-#	clippy
-#	rustfmt
+    # Programming (Multi-Lang)
+    vscode
+    gcc
 
-	# Python
-	python314
+    # Rust
+    rustc
+    cargo
+    #	clippy
+    #	rustfmt
+
+    # Python
+    python314
+
+    # Typst
+    typst
+
+    # Nix
+    nixfmt
+
+    # Productivity
+    libreoffice
+    trilium-desktop
+    drawio
+
+    # Maker - Applications
+    blender
+    freecad
+    inkscape-with-extensions
+    gimp-with-plugins
+    bambu-studio
+
+    # Media
+    vlc
+
+    # System
+    btop
+    syncthing
+    htop
+    bluez
+
+    # Misc
+    ivpn-ui
+    ivpn
+    kdePackages.ktorrent
 
 
-	# Typst
-	typst
+	# Game Related
+	steam
+    # Testing
+    #virtualbox
+    #linuxKernel.packages.linux_zen.virtualbox
+    #linuxKernel.packages.linux_xanmod_stable.virtualbox
 
 
-  # Nix
-  nixfmt
 
-	# Productivity
-	libreoffice
-	trilium-desktop
-	drawio
-
-	# Maker - Applications
-	blender
-	freecad
-	inkscape-with-extensions
-	gimp-with-plugins
-	bambu-studio
-	
-	# Media
-	vlc
-
-	# System
-	btop
-	syncthing
-	htop
-	bluez
-
-
-	# Misc
-	ivpn-ui
-	ivpn
- 	kdePackages.ktorrent
-
-	# Testing
-	#virtualbox
-	#linuxKernel.packages.linux_zen.virtualbox
-	#linuxKernel.packages.linux_xanmod_stable.virtualbox
-	
   ];
+
+
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
