@@ -152,7 +152,9 @@ services.xserver.videoDrivers = [ "nvidia" ];
 	btop 
 	bluez
 	micro
+  git
 
+  
 	
  ];
 
