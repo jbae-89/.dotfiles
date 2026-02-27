@@ -45,6 +45,10 @@
 	# Typst
 	typst
 
+
+  # Nix
+  nixfmt
+
 	# Productivity
 	libreoffice
 	trilium-desktop
