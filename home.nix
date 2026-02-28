@@ -45,6 +45,7 @@
 
     # Nix
     nixfmt
+    nixd
 
     # Productivity
     libreoffice
