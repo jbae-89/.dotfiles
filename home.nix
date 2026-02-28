@@ -56,7 +56,7 @@
     freecad
     inkscape-with-extensions
     gimp-with-plugins
-    bambu-studio
+    #bambu-studio
 
     # Media
     vlc

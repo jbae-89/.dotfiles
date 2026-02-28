@@ -175,10 +175,10 @@
     elisa
   ];
 
-# Firewall exceptions for Bambu Studio
-networking.firewall.extraCommands = ''
-  iptables -I INPUT -p udp -m udp --dports 1990,2021 -j ACCEPT
-'';
+# # Firewall exceptions for Bambu Studio
+# networking.firewall.extraCommands = ''
+#   iptables -I INPUT -p udp -m udp --dports 1990,2021 -j ACCEPT
+# '';
 
 
   # Some programs need SUID wrappers, can be configured further or are
