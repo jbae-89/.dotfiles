@@ -72,8 +72,8 @@
     # Misc
     ivpn-ui
     ivpn
-    kdePackages.ktorrent
-
+#    kdePackages.ktorrent
+	deluge-gtk
 
 	# Game Related
 	steam

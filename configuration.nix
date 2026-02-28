@@ -21,6 +21,7 @@
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
   ];
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -66,15 +67,18 @@
 #  ];
 
 
+ hardware.nvidia.powerManagement.enable = true;
+#  hardware.nvidia.powerManagement.finegrained = false;
 
   # Nvidia Drivers
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   hardware.nvidia.open = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  systemd.services.nvidia-resume.enable = false;
+  systemd.services.nvidia-resume.enable = true;
   systemd.services.nvidia-hibernate.enable = false;
   
+  #systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
  
   # Bluetooth hardware configuration
 
