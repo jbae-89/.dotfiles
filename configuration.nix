@@ -17,6 +17,12 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
+  # Kernel Boot Parameters
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "nvidia-drm.fbdev=1"
+  ];
+
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -27,14 +33,49 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+
+  ## Enable Hibernation ##
+
+#boot.kernelParams = ["resume_offset=23431168"];
+
+#boot.resumeDevice = "/dev/disk/by-uuid/26504187-fee1-4e1d-a555-c8c13404dc33";
+
+#boot.initrd.systemd.enable = true;
+
+#services.power-profiles-daemon.enable = true;
+
+  # Suspend first
+#  boot.kernelParams = ["mem_sleep_default=deep"];
+
+  # Define time delay for hibernation
+#  systemd.sleep.extraConfig = ''
+#    HibernateDelaySec=30m
+#    SuspendState=mem
+#  '';
+
+#security.protectKernelImage = false;
+
   # Power Management
   powerManagement.enable = true;
+
+#  swapDevices = [
+#    {
+#      device = "/var/lib/swapfile";
+#      size = 64 * 1024; # 64GB in MB
+#    }
+#  ];
+
+
 
   # Nvidia Drivers
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   hardware.nvidia.open = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  systemd.services.nvidia-resume.enable = false;
+  systemd.services.nvidia-hibernate.enable = false;
+  
+ 
   # Bluetooth hardware configuration
 
   hardware.bluetooth = {
@@ -92,8 +133,11 @@
   services.printing.enable = true;
 
   # Enable IVPN service
-
   services.ivpn.enable = true;
+
+  # Enable xdg portal
+  xdg.portal.enable = true;
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
