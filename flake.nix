@@ -1,6 +1,7 @@
 {
 
-  description = "Default_Flake";
+  # This should be the primary flake for all of my systems.
+  description = "Primary_Flake";
 
   inputs = {
 
@@ -32,7 +33,6 @@
       lib = nixpkgs.lib;
     in
     {
-
       nixosConfigurations = {
         nixos = lib.nixosSystem {
 

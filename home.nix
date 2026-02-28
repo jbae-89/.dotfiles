@@ -66,6 +66,7 @@
     syncthing
     htop
     bluez
+    fzf
 
     # Misc
     ivpn-ui
