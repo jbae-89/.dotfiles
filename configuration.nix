@@ -158,6 +158,9 @@
     micro
     git
 
+
+   # Bambu Studio
+   bambu-studio
   ];
 
   # Additional Services
