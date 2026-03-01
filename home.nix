@@ -42,7 +42,7 @@
 
     # Typst
     typst
-
+    tinymist
     # Nix
     nixfmt
     nixd
@@ -76,13 +76,11 @@
 	deluge-gtk
 
 	# Game Related
-	steam
+	  steam
     # Testing
-    #virtualbox
+    virtualbox
     #linuxKernel.packages.linux_zen.virtualbox
     #linuxKernel.packages.linux_xanmod_stable.virtualbox
-
-
 
   ];
 

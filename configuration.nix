@@ -35,8 +35,8 @@
   networking.networkmanager.enable = true;
 
 
-  ## Enable Hibernation ##
-
+# Hibernation is not the setting that you want.
+## Enable Hibernation ##
 #boot.kernelParams = ["resume_offset=23431168"];
 
 #boot.resumeDevice = "/dev/disk/by-uuid/26504187-fee1-4e1d-a555-c8c13404dc33";
@@ -205,7 +205,7 @@
     bluez
     micro
     git
-
+	neovim
 
    # Bambu Studio
    bambu-studio
