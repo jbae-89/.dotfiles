@@ -135,6 +135,12 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  # Autodetect printer?
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
 
   # Enable IVPN service
   services.ivpn.enable = true;
