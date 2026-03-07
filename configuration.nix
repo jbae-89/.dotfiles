@@ -7,7 +7,12 @@
 {
   imports = [
     # Include the results of the hardware scan.
+    #./hardware-configuration.nix
+    # If using this you need to use --impure
+    # For initial usage maybe and then
+    # don't do this, do a nixos-generate-config and get it to your dotfiles...
     ./hardware-configuration.nix
+    #./common.nix
   ];
 
   # Bootloader.
@@ -116,11 +121,31 @@
 
   # Enable the X11 windowing system.
   # You can disable this if you're only using the Wayland session.
-  services.xserver.enable = true;
+ # services.xserver.enable = true;
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+
+# Enable  DE
+	services.xserver = {
+		enable = true;
+		displayManager.lightdm.enable = true;
+		desktopManager = {
+			cinnamon.enable = true;
+		};
+	};
+
+	services.displayManager.defaultSession = "cinnamon";
+	services.libinput.enable = true;
+
+
+xdg.portal.enable = true;
+xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+xdg.portal.config = {
+  x-cinnamon = {
+    default = [ "xapp" "gtk" ];
+  };
+};
+
+
 
   # Enable OpenGL
   hardware.graphics = {
@@ -135,7 +160,8 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  # Autodetect printer?
+  
+  # Autodetect printer
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -145,8 +171,6 @@
   # Enable IVPN service
   services.ivpn.enable = true;
 
-  # Enable xdg portal
-  xdg.portal.enable = true;
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -198,7 +222,8 @@
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
-
+    neovim
+    kitty
     # Install these with home manager
     # Internet
     brave
@@ -211,11 +236,12 @@
     bluez
     micro
     git
-	neovim
-
+	
    # Bambu Studio
    bambu-studio
-  ];
+
+];
+
 
   # Additional Services
   #services.ivpn.enable = true;
@@ -225,6 +251,9 @@
   services.xserver.excludePackages = with pkgs; [
     xterm
   ];
+
+environment.cinnamon.excludePackages = with pkgs; [ gnome-terminal ];   
+
 
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     okular

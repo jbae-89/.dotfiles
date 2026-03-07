@@ -46,7 +46,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.josh = import ./home.nix; # Point to your home.nix
+              home-manager.users.josh = import ./home.nix;
             }
           ];
         };
