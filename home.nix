@@ -24,6 +24,8 @@
 
     # Install these with home manager
 
+    # Wallpaper Manager
+    hydrapaper
     # Internet
     webcord
 
@@ -38,11 +40,12 @@
     #	rustfmt
 
     # Python
-    python314
-
+    python313
+    python313Packages.rasterio
     # Typst
     typst
     tinymist
+ 
     # Nix
     nixfmt
     nixd
@@ -57,7 +60,18 @@
     freecad
     inkscape-with-extensions
     gimp-with-plugins
-    #bambu-studio
+    
+(qgis.override {
+    extraPythonPackages = ps: with ps; [
+      matplotlib
+      numpy
+      rasterio
+      # srtm.py is 'srtm' in nixpkgs
+    ];
+  })
+
+   # qgis
+ #bambu-studio
 
     # Media
     vlc
@@ -72,18 +86,34 @@
     # Misc
     ivpn-ui
     ivpn
-#    kdePackages.ktorrent
-	deluge-gtk
 
-	# Game Related
-	  steam
-    # Testing
+# Torrenting
+    deluge-gtk
+
+ # Game Related
+    steam
+    
+# Testing
     virtualbox
     #linuxKernel.packages.linux_zen.virtualbox
     #linuxKernel.packages.linux_xanmod_stable.virtualbox
 
+  # Fonts
+  source-sans-pro
+  source-sans
+  roboto
+  font-awesome
+
   ];
 
+# fonts = {
+#   enableDefaultPackages = true;
+#   packages = with pkgs; [
+#     noto-fonts
+#     fira-code
+#     (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
+#   ];
+# };
 
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -123,4 +153,22 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  # Enable starship
+
+  programs.starship = {
+    enable = true;
+    # Configuration written to ~/.config/starship.toml
+    settings = {
+      # add_newline = false;
+
+       character = {
+         success_symbol = "[➜](bold green)";
+         error_symbol = "[➜](bold red)";
+       };
+
+      # package.disabled = true;
+    };
+  };
+
+
 }
