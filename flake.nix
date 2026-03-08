@@ -1,24 +1,13 @@
 {
-
-  # This should be the primary flake for all of my systems.
   description = "Primary_Flake";
 
   inputs = {
-
-    #	nixpkgs = {
-    #	url = "github:/NixOS/nixpkgs/nixos-25.11";
-    #	};
-
-    nixpkgs.url = "github:/NixOS/nixpkgs/nixos-25.11";
-
-    #	nixpkgs.url = "nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
-      # This line ensures home-manager uses the same nixpkgs version as your system
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs =
@@ -28,28 +17,36 @@
       home-manager,
       ...
     }:
-
     let
       lib = nixpkgs.lib;
+
+      mkHost = hostname: lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          # Shared config for all machines
+          ./common.nix
+
+          # Per-host system config (hostname, GPU, power, etc.)
+          ./hosts/${hostname}/${hostname}.nix
+
+          # Per-host hardware config (generated via nixos-generate-config)
+          ./hosts/${hostname}/hardware-configuration.nix
+
+          # Home Manager
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs    = true;
+            home-manager.useUserPackages  = true;
+            home-manager.users.josh       = import ./home.nix;
+          }
+        ];
+      };
     in
     {
       nixosConfigurations = {
-        nixos = lib.nixosSystem {
-
-          system = "x86_64-linux";
-          modules = [
-
-            ./configuration.nix
-
-            # Import the Home Manager NixOS module
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.josh = import ./home.nix;
-            }
-          ];
-        };
+        desk-jb = mkHost "desk-jb";
+        leno-jb = mkHost "leno-jb";
+        omen-jb = mkHost "omen-jb";
       };
     };
 }
