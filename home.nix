@@ -91,7 +91,6 @@
       rebuild      = "sudo nixos-rebuild switch --flake .#$(hostname)";
       rebuild-boot = "sudo nixos-rebuild boot --flake .#$(hostname)";
       nix-clean    = "sudo nix-collect-garbage -d";
-      cmd          = "kitty";
 
       # Shortcuts
       ll   = "ls -lah";
