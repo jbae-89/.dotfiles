@@ -5,7 +5,7 @@
 {
   networking.hostName = "desk-jb";
 
-  # ── Kernel ─────────────────────────────────────────────────────────────────
+  # -- Kernel -----------------------------------------------------------------
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   boot.kernelParams = [
@@ -14,7 +14,9 @@
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
   ];
 
-  # ── NVIDIA ─────────────────────────────────────────────────────────────────
+  boot.initrd.systemd.enable = true;
+
+  # -- NVIDIA -----------------------------------------------------------------
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
@@ -23,10 +25,11 @@
     powerManagement.enable = true;
   };
 
+  systemd.services.nvidia-suspend.enable   = true;
   systemd.services.nvidia-resume.enable    = true;
-  systemd.services.nvidia-hibernate.enable = false;
+  systemd.services.nvidia-hibernate.enable = true;
 
-  # ── Host-specific packages ─────────────────────────────────────────────────
+  # -- Host-specific packages -------------------------------------------------
   environment.systemPackages = with pkgs; [
     bambu-studio
     vlc

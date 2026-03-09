@@ -5,7 +5,7 @@
 {
   networking.hostName = "omen-jb";
 
-  # ── Kernel ─────────────────────────────────────────────────────────────────
+  # -- Kernel -----------------------------------------------------------------
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   boot.kernelParams = [
@@ -14,9 +14,7 @@
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
   ];
 
-  # ── NVIDIA PRIME (hybrid offload) ──────────────────────────────────────────
-  # Display renders on Intel iGPU by default; apps can be launched on the
-  # NVIDIA dGPU on demand with: nvidia-offload <app>
+  # -- NVIDIA PRIME (hybrid offload) ------------------------------------------
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
@@ -25,28 +23,24 @@
 
     powerManagement = {
       enable      = true;
-      finegrained = true;   # Power-gate dGPU when idle
+      finegrained = true;   
     };
 
     prime = {
       offload = {
         enable           = true;
-        enableOffloadCmd = true;   # Adds `nvidia-offload` helper to PATH
+        enableOffloadCmd = true;   
       };
 
-      # ⚠️  Update these Bus IDs to match YOUR Omen's hardware.
-      # Run on the machine:
-      #   nix-shell -p pciutils --run "lspci | grep -E 'VGA|3D'"
-      # Format: PCI:<bus>:<device>:<function>
-      intelBusId  = "PCI:00:02:0";   # Intel iGPU  — verify on device
-      nvidiaBusId = "PCI:01:00:0";   # NVIDIA dGPU — verify on device
+      intelBusId  = "PCI:00:02:0";   
+      nvidiaBusId = "PCI:01:00:0";  
     };
   };
 
   systemd.services.nvidia-resume.enable    = true;
   systemd.services.nvidia-hibernate.enable = false;
 
-  # ── Battery / Power (TLP) ──────────────────────────────────────────────────
+  # -- Battery / Power (TLP) --------------------------------------------------
   services.tlp = {
     enable = false;
     settings = {
@@ -60,14 +54,14 @@
 
   services.upower.enable = true;
 
-  # ── Touchpad ───────────────────────────────────────────────────────────────
+  # -- Touchpad ---------------------------------------------------------------
   services.libinput.touchpad = {
     tapping            = true;
     naturalScrolling   = true;
     disableWhileTyping = true;
   };
 
-  # ── Lid / Suspend ──────────────────────────────────────────────────────────
+  # -- Lid / Suspend ----------------------------------------------------------
   services.logind = {
     lidSwitch              = "suspend";
     lidSwitchExternalPower = "suspend";

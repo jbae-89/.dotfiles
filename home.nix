@@ -82,6 +82,62 @@
     font-awesome
 
   ];
+# -- Program Alias ------------------------------------------------------------
+xdg.desktopEntries = {
+    kitty = {
+      name = "Kitty";
+      genericName = "Terminal Emulator";
+      exec = "kitty";
+      icon = "kitty";
+      terminal = false;
+      categories = [ "System" "TerminalEmulator" ];
+      settings = {
+        # This adds "cmd" and "console" to the search index
+        Keywords = "shell;prompt;command;commandline;cmd;console;";
+      };
+    };
+  };
+
+# -- Neovim settings ----------------------------------------------------------
+programs.neovim = {
+  enable = true;
+  extraConfig = ''
+    set number
+    set relativenumber
+  '';
+  plugins = with pkgs.vimPlugins; [
+    vim-nix
+    (nvim-treesitter.withPlugins (plugins: with plugins; [
+    	nix
+    	python
+    	rust
+    	c
+    	go
+    	
+    ]
+    ))
+  ];
+};
+
+
+# -- Terminal: Kitty --------------------------------------------------------
+  programs.kitty = {
+    enable = true;
+    themeFile = "Brogrammer";
+    
+    settings = {
+      copy_on_select = "yes";
+      confirm_os_window_close = 0;
+    };
+
+    keybindings = {
+      "ctrl+c" = "copy_or_interrupt";
+      "ctrl+v" = "paste_from_clipboard";
+      
+    };
+  };
+
+
 
   # -- Shell: Bash ------------------------------------------------------------
   programs.bash = {
@@ -102,7 +158,9 @@
   # -- Git --------------------------------------------------------------------
     programs.git = {
     enable    = true;
-    extraConfig.init.defaultBranch = "main";
+    settings.init.defaultBranch = "main";
+    settings.user.name = "jbae-89";
+    settings.user.email = "joshua.e.bailey1@gmail.com";
   };
 
   # -- Syncthing -------------------------------------------------------------

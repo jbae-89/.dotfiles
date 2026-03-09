@@ -5,10 +5,10 @@
 {
   networking.hostName = "leno-jb";
 
-  # ── Kernel ─────────────────────────────────────────────────────────────────
+  # -- Kernel -----------------------------------------------------------------
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
-  # ── Integrated Graphics (Intel) ────────────────────────────────────────────
+  # -- Integrated Graphics (Intel) --------------------------------------------
   # hardware.graphics is enabled in common.nix.
   # Intel media driver for hardware video acceleration:
   hardware.graphics.extraPackages = with pkgs; [
@@ -19,7 +19,7 @@
     libvdpau-va-gl
   ];
 
-  # ── Battery / Power (TLP) ──────────────────────────────────────────────────
+  # -- Battery / Power (TLP) --------------------------------------------------
   services.tlp = {
     enable = false;
     settings = {
@@ -36,14 +36,14 @@
 
   services.upower.enable = true;
 
-  # ── Touchpad ───────────────────────────────────────────────────────────────
+  # -- Touchpad ---------------------------------------------------------------
   services.libinput.touchpad = {
     tapping            = true;
     naturalScrolling   = true;
     disableWhileTyping = true;
   };
 
-  # ── Lid / Suspend ──────────────────────────────────────────────────────────
+  # -- Lid / Suspend ----------------------------------------------------------
   services.logind = {
     lidSwitch              = "suspend";
     lidSwitchExternalPower = "suspend";

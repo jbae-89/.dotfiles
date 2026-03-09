@@ -53,7 +53,10 @@
   services.displayManager.defaultSession = "cinnamon";
   services.libinput.enable               = true;
 
-  environment.cinnamon.excludePackages = with pkgs; [ gnome-terminal ];
+  environment.cinnamon.excludePackages = with pkgs; [ 
+    gnome-terminal
+  #  gnome-screenshot
+  ];
 
   xdg.portal = {
     enable        = true;
