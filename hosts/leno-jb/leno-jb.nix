@@ -45,8 +45,8 @@
 
   # -- Lid / Suspend ----------------------------------------------------------
   services.logind = {
-    lidSwitch              = "suspend";
-    lidSwitchExternalPower = "suspend";
+    settings.Login.lidSwitch = "suspend";
+    settings.Login.lidSwitchExternalPower = "suspend";
   };
 
   system.stateVersion = "25.11";
