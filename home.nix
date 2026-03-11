@@ -2,9 +2,9 @@
 { config, pkgs, ... }:
 
 {
-  home.username    = "josh";
+  home.username = "josh";
   home.homeDirectory = "/home/josh";
-  home.stateVersion  = "25.11";
+  home.stateVersion = "25.11";
 
   # -- User Packages ----------------------------------------------------------
   home.packages = with pkgs; [
@@ -28,29 +28,23 @@
     # Rust
     rustc
     cargo
-    # clippy
-    # rustfmt
 
     # Python
-    python313
-    python313Packages.rasterio
+
+    (python313.withPackages (ps: [
+      ps.pillow
+      ps.rasterio
+      ps.numpy
+      ps.matplotlib
+    ]))
 
     # Typst
     typst
     tinymist
 
     # Nix
-    nixfmt-rfc-style   # nixfmt was renamed; this is the current package
+    nixfmt-rfc-style
     nixd
-
-    # -- GIS ------------------------------------------------------------------
-    (qgis.override {
-      extraPythonPackages = ps: with ps; [
-        matplotlib
-        numpy
-        rasterio
-      ];
-    })
 
     # -- Creative / Maker -----------------------------------------------------
     blender
@@ -80,17 +74,29 @@
     source-sans
     roboto
     font-awesome
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    google-fonts
 
   ];
-# -- Program Alias ------------------------------------------------------------
-xdg.desktopEntries = {
+  # -- Program Alias ------------------------------------------------------------
+  xdg.desktopEntries = {
     kitty = {
       name = "Kitty";
       genericName = "Terminal Emulator";
       exec = "kitty";
       icon = "kitty";
       terminal = false;
-      categories = [ "System" "TerminalEmulator" ];
+      categories = [
+        "System"
+        "TerminalEmulator"
+      ];
       settings = {
         # This adds "cmd" and "console" to the search index
         Keywords = "shell;prompt;command;commandline;cmd;console;";
@@ -98,33 +104,11 @@ xdg.desktopEntries = {
     };
   };
 
-# -- Neovim settings ----------------------------------------------------------
-programs.neovim = {
-  enable = true;
-  extraConfig = ''
-    set number
-    set relativenumber
-  '';
-  plugins = with pkgs.vimPlugins; [
-    vim-nix
-    (nvim-treesitter.withPlugins (plugins: with plugins; [
-    	nix
-    	python
-    	rust
-    	c
-    	go
-    	
-    ]
-    ))
-  ];
-};
-
-
-# -- Terminal: Kitty --------------------------------------------------------
+  # -- Terminal: Kitty --------------------------------------------------------
   programs.kitty = {
     enable = true;
     themeFile = "Brogrammer";
-    
+
     settings = {
       copy_on_select = "yes";
       confirm_os_window_close = 0;
@@ -133,31 +117,28 @@ programs.neovim = {
     keybindings = {
       "ctrl+c" = "copy_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";
-      
+
     };
   };
-
-
 
   # -- Shell: Bash ------------------------------------------------------------
   programs.bash = {
     enable = true;
     shellAliases = {
       # Rebuild this machine — run from inside your dotfiles directory
-      rebuild      = "sudo nixos-rebuild switch --flake .#$(hostname)";
+      rebuild = "sudo nixos-rebuild switch --flake .#$(hostname)";
       rebuild-boot = "sudo nixos-rebuild boot --flake .#$(hostname)";
-      nix-clean    = "sudo nix-collect-garbage -d";
+      nix-clean = "sudo nix-collect-garbage -d";
 
       # Shortcuts
-      ll   = "ls -lah";
+      ll = "ls -lah";
       ".." = "cd ..";
     };
   };
 
-
   # -- Git --------------------------------------------------------------------
-    programs.git = {
-    enable    = true;
+  programs.git = {
+    enable = true;
     settings.init.defaultBranch = "main";
     settings.user.name = "jbae-89";
     settings.user.email = "joshua.e.bailey1@gmail.com";
