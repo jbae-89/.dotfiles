@@ -12,6 +12,7 @@
     # -- Internet -------------------------------------------------------------
     brave
     webcord
+    firefox
 
     # -- Productivity ---------------------------------------------------------
     libreoffice
@@ -24,6 +25,7 @@
     # -- Development ----------------------------------------------------------
     vscode
     gcc
+    arduino-core
 
     # Rust
     rustc
@@ -54,6 +56,9 @@
     bambu-studio
 
     # -- System Utilities -----------------------------------------------------
+    qgis
+
+    # -- System Utilities -----------------------------------------------------
     btop
     htop
     fzf
@@ -74,6 +79,9 @@
     source-sans
     roboto
     font-awesome
+    corefonts
+    freefont_ttf
+    dejavu_fonts
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-color-emoji
@@ -103,6 +111,8 @@
       };
     };
   };
+
+  xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
   # -- Terminal: Kitty --------------------------------------------------------
   programs.kitty = {
@@ -154,4 +164,5 @@
 
   # -- Home Manager self-management ------------------------------------------
   programs.home-manager.enable = true;
+
 }

@@ -20,22 +20,44 @@
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
-    open    = true;
+    open    = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+    powerManagement.finegrained = false;
+    modesetting.enable = true;
     powerManagement.enable = true;
   };
 
-  systemd.services.nvidia-suspend.enable   = true;
-  systemd.services.nvidia-resume.enable    = true;
-  systemd.services.nvidia-hibernate.enable = true;
+  #systemd.services.nvidia-suspend.enable   = true;
+  #systemd.services.nvidia-resume.enable    = true;
+  #systemd.services.nvidia-hibernate.enable = true;
+
+boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+
+
 
   # -- Host-specific packages -------------------------------------------------
   environment.systemPackages = with pkgs; [
-    bambu-studio
-    vlc
+    #bambu-studio
+    #orca-slicer
     # Uncomment to open LAN ports for Bambu Studio:
     # (handled via networking.firewall.extraCommands if needed)
   ];
+
+ services.flatpak.enable = true;
+
+networking.firewall = {
+  enable = true;
+  # Ports for Bambu Studio printer discovery
+  allowedUDPPorts = [ 1900 5353 ]; 
+  allowedTCPPorts = [ 8080 ]; # Optional: for some local camera streams
+  
+  # Advanced: If simple port opening isn't enough for multicast discovery
+  extraCommands = ''
+    iptables -I INPUT -m pkttype --pkt-type multicast -j ACCEPT
+  '';
+};
+
+
 
   system.stateVersion = "25.11";
 }

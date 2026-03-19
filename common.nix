@@ -53,10 +53,31 @@
   services.displayManager.defaultSession = "cinnamon";
   services.libinput.enable               = true;
 
+services.xserver.displayManager.sessionCommands = ''
+  if test "$XDG_CURRENT_DESKTOP" = "Cinnamon"; then
+    gsettings set org.cinnamon.desktop.screensaver show-media-controls false
+  fi
+'';  
   environment.cinnamon.excludePackages = with pkgs; [ 
     gnome-terminal
-  #  gnome-screenshot
+    # gnome-screenshot
   ];
+
+# Add this to your configuration.nix
+environment.variables = {
+  XCURSOR_SIZE = "24"; # Adjust to your preferred size
+  XCURSOR_THEME = "Adwaita"; # Or whatever theme you use
+};
+
+
+services.dbus.enable = true;
+
+qt = {
+  enable = true;
+  platformTheme = "gtk2";
+  style = "gtk2";
+};
+
 
   xdg.portal = {
     enable        = true;
@@ -84,13 +105,25 @@
     pulse.enable      = true;
   };
 
-  # -- Printing ---------------------------------------------------------------
-  services.printing.enable = true;
-  services.avahi = {
+# -- Printing ---------------------------------------------------------------
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [ 
+      brlaser           # Support for Brother laser printers
+# brother-2390dw-cups-bin # Works for the 3290CDW series
+    ];
+  };
+
+services.avahi = {
     enable       = true;
-    nssmdns4     = true;
+    nssmdns4     = true; # This allows you to find "printer.local"
     openFirewall = true;
   };
+
+
+
+  # This allows the "Add Printer" dialog to find the Brother binary
+  programs.system-config-printer.enable = true;
 
   # -- VPN --------------------------------------------------------------------
   services.ivpn.enable = true;
@@ -102,8 +135,17 @@
   users.users.josh = {
     isNormalUser = true;
     description  = "josh";
-    extraGroups  = [ "networkmanager" "wheel" ];
+    extraGroups  = [ "networkmanager" "wheel" "dialout" "plugdev" ];
   };
+
+services.udev.extraRules = ''
+
+
+  SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0666", GROUP="dialout", ENV{ID_MM_DEVICE_IGNORE}="1"
+  
+  ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ENV{ID_MM_DEVICE_IGNORE}="1"
+'';
+
 
   # -- Programs ---------------------------------------------------------------
   programs.steam.enable = true;
@@ -118,5 +160,9 @@
     kitty
     btop
     bluez
+    busybox
+    adwaita-icon-theme
+
+
   ];
 }
