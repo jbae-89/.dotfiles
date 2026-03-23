@@ -1,12 +1,9 @@
 {
   description = "Primary_Flake";
 
-  nixConfig = {
-    extra-substituters = [ "https://geonix.cachix.org" ];
-    extra-trusted-public-keys = [
-      "geonix.cachix.org-1:iyhIXkDLYLXbMhL3X3qOLBtRF8HEyAbhPXjjPeYsCl0="
-    ];
-  };
+  # nixConfig = {
+
+  # };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";

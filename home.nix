@@ -66,7 +66,6 @@ nixpkgs.overlays = [
     bambu-studio
 
     # -- System Utilities -----------------------------------------------------
-    # qgis 
     
     # -- System Utilities -----------------------------------------------------
     btop
@@ -115,22 +114,11 @@ nixpkgs.overlays = [
         "System"
         "TerminalEmulator"
       ];
-      settings = {
-        # This adds "cmd" and "console" to the search index
+settings = {
         Keywords = "shell;prompt;command;commandline;cmd;console;";
       };
-    };
-
-    qgis = {
-      name = "QGIS";
-      genericName = "Geographic Information System";
-      exec = "micromamba run -n qgis qgis %F";
-      icon = "qgis";
-      terminal = false;
-      categories = [ "Education" "Science" "Geography" ];
-      mimeType = [ "application/x-qgis" ];
-    };
-  };
+    };  # <-- closes kitty entry
+  };    # <-- closes xdg.desktopEntries
 
   xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
 
