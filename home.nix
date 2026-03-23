@@ -6,6 +6,16 @@
   home.homeDirectory = "/home/josh";
   home.stateVersion = "25.11";
 
+
+nixpkgs.overlays = [
+  (self: super: {
+    gdal = super.callPackage "${super.path}/pkgs/by-name/gd/gdal/package.nix" {
+      libecwj2 = self.libecwj2;
+    };
+  })
+];
+
+
   # -- User Packages ----------------------------------------------------------
   home.packages = with pkgs; [
 
@@ -56,8 +66,8 @@
     bambu-studio
 
     # -- System Utilities -----------------------------------------------------
-    qgis
-
+    # qgis 
+    
     # -- System Utilities -----------------------------------------------------
     btop
     htop
@@ -109,6 +119,16 @@
         # This adds "cmd" and "console" to the search index
         Keywords = "shell;prompt;command;commandline;cmd;console;";
       };
+    };
+
+    qgis = {
+      name = "QGIS";
+      genericName = "Geographic Information System";
+      exec = "micromamba run -n qgis qgis %F";
+      icon = "qgis";
+      terminal = false;
+      categories = [ "Education" "Science" "Geography" ];
+      mimeType = [ "application/x-qgis" ];
     };
   };
 

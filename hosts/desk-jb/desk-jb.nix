@@ -43,8 +43,6 @@ boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm
     # (handled via networking.firewall.extraCommands if needed)
   ];
 
- services.flatpak.enable = true;
-
 networking.firewall = {
   enable = true;
   # Ports for Bambu Studio printer discovery

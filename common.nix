@@ -67,6 +67,7 @@ services.xserver.displayManager.sessionCommands = ''
 environment.variables = {
   XCURSOR_SIZE = "24"; # Adjust to your preferred size
   XCURSOR_THEME = "Adwaita"; # Or whatever theme you use
+  GDAL_DRIVER_PATH = "/run/current-system/sw/lib/gdalplugins";
 };
 
 
@@ -109,8 +110,7 @@ qt = {
   services.printing = {
     enable = true;
     drivers = with pkgs; [ 
-      brlaser           # Support for Brother laser printers
-# brother-2390dw-cups-bin # Works for the 3290CDW series
+      brlaser
     ];
   };
 
@@ -120,9 +120,6 @@ services.avahi = {
     openFirewall = true;
   };
 
-
-
-  # This allows the "Add Printer" dialog to find the Brother binary
   programs.system-config-printer.enable = true;
 
   # -- VPN --------------------------------------------------------------------
@@ -139,7 +136,6 @@ services.avahi = {
   };
 
 services.udev.extraRules = ''
-
 
   SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0666", GROUP="dialout", ENV{ID_MM_DEVICE_IGNORE}="1"
   

@@ -1,6 +1,13 @@
 {
   description = "Primary_Flake";
 
+  nixConfig = {
+    extra-substituters = [ "https://geonix.cachix.org" ];
+    extra-trusted-public-keys = [
+      "geonix.cachix.org-1:iyhIXkDLYLXbMhL3X3qOLBtRF8HEyAbhPXjjPeYsCl0="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
 
@@ -23,21 +30,23 @@
       mkHost = hostname: lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          # Shared config for all machines
           ./common.nix
-
-          # Per-host system config (hostname, GPU, power, etc.)
           ./hosts/${hostname}/${hostname}.nix
-
-          # Per-host hardware config (generated via nixos-generate-config)
           ./hosts/${hostname}/hardware-configuration.nix
 
-          # Home Manager
           home-manager.nixosModules.home-manager
           {
-            home-manager.useGlobalPkgs    = true;
-            home-manager.useUserPackages  = true;
-            home-manager.users.josh       = import ./home.nix;
+            home-manager.useGlobalPkgs   = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.josh      = import ./home.nix;
+          }
+
+          {
+            environment.systemPackages = [
+              (nixpkgs.legacyPackages.x86_64-linux.qgis.override {
+                extraPythonPackages = ps: [ ps.scipy ps.matplotlib ];
+              })
+            ];
           }
         ];
       };
