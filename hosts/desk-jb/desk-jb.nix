@@ -27,10 +27,6 @@
     powerManagement.enable = true;
   };
 
-  #systemd.services.nvidia-suspend.enable   = true;
-  #systemd.services.nvidia-resume.enable    = true;
-  #systemd.services.nvidia-hibernate.enable = true;
-
 boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
 

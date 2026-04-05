@@ -1,5 +1,4 @@
 # hosts/leno-jb/leno-jb.nix
-# Lenovo Laptop — Intel CPU, integrated graphics only, battery/touchpad
 { config, pkgs, ... }:
 
 {
@@ -9,12 +8,9 @@
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   # -- Integrated Graphics (Intel) --------------------------------------------
-  # hardware.graphics is enabled in common.nix.
-  # Intel media driver for hardware video acceleration:
   hardware.graphics.extraPackages = with pkgs; [
     intel-media-driver   # VA-API (Broadwell+)
     intel-vaapi-driver   # VA-API (older gen fallback)
-    #vaapiVdpau
     libva-vdpau-driver    
     libvdpau-va-gl
   ];

@@ -1,10 +1,6 @@
 {
   description = "Primary_Flake";
 
-  # nixConfig = {
-
-  # };
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -39,16 +35,31 @@
           }
 
           {
-            environment.systemPackages = [
-              (nixpkgs.legacyPackages.x86_64-linux.qgis.override {
-                extraPythonPackages = ps: [
-                  ps.matplotlib
-                  ps.rasterio
-                  ps.numpy
-                  ];
-              })
-            ];
+environment.systemPackages = [
+  (let
+    pkgs-x86 = nixpkgs.legacyPackages.x86_64-linux;
+
+    myQgis = (pkgs-x86.qgis.override {
+      extraPythonPackages = ps: [
+        ps.matplotlib
+        ps.rasterio
+        ps.numpy
+      ];
+    });
+  in 
+  pkgs-x86.symlinkJoin {
+    name = "qgis-x11";
+    paths = [ myQgis ];
+    nativeBuildInputs = [ pkgs-x86.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/qgis \
+        --set QT_QPA_PLATFORM xcb
+    '';
+  })
+];
           }
+
+          
         ];
       };
     in

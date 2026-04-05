@@ -1,5 +1,4 @@
 # hosts/omen-jb/omen-jb.nix
-# HP Omen Laptop — Intel CPU + NVIDIA dGPU (PRIME offload), battery/touchpad
 { config, pkgs, ... }:
 
 {
@@ -63,8 +62,8 @@
 
   # -- Lid / Suspend ----------------------------------------------------------
   services.logind = {
-    lidSwitch              = "suspend";
-    lidSwitchExternalPower = "suspend";
+    settings.Login.HandleLidSwitchExternalPower = "suspend";
+    settings.Login.HandleLidSwitch = "suspend";
   };
 
   system.stateVersion = "26.05";

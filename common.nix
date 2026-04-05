@@ -1,6 +1,3 @@
-# common.nix
-# Shared configuration applied to ALL hosts.
-# Put machine-specific settings (GPU drivers, hostname, power) in hosts/<n>/<n>.nix
 { config, pkgs, ... }:
 
 {
@@ -41,49 +38,50 @@
     LC_TIME           = "en_US.UTF-8";
   };
 
-  # -- Desktop: Cinnamon + LightDM --------------------------------------------
+  # -- Desktop: KDE Plasma + SDDM ---------------------------------------------
   services.xserver = {
-    enable                      = true;
-    displayManager.lightdm.enable = true;
-    desktopManager.cinnamon.enable = true;
+    enable = true;
     xkb = { layout = "us"; variant = ""; };
     excludePackages = with pkgs; [ xterm ];
   };
 
-  services.displayManager.defaultSession = "cinnamon";
-  services.libinput.enable               = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true; 
+  };
 
-services.xserver.displayManager.sessionCommands = ''
-  if test "$XDG_CURRENT_DESKTOP" = "Cinnamon"; then
-    gsettings set org.cinnamon.desktop.screensaver show-media-controls false
-  fi
-'';  
-  environment.cinnamon.excludePackages = with pkgs; [ 
-    gnome-terminal
-    # gnome-screenshot
+  services.desktopManager.plasma6.enable = true;
+
+  services.displayManager.defaultSession = "plasma";
+
+  services.libinput.enable = true;
+
+  environment.plasma6.excludePackages = with pkgs.kdePackages; [
+    konsole 
+    oxygen 
   ];
 
-# Add this to your configuration.nix
-environment.variables = {
-  XCURSOR_SIZE = "24"; # Adjust to your preferred size
-  XCURSOR_THEME = "Adwaita"; # Or whatever theme you use
-  GDAL_DRIVER_PATH = "/run/current-system/sw/lib/gdalplugins";
-};
+  # -- Environment ------------------------------------------------------------
+  environment.variables = {
+    XCURSOR_SIZE  = "24";
+    XCURSOR_THEME = "breeze_cursors";
+    GDAL_DRIVER_PATH = "/run/current-system/sw/lib/gdalplugins";
+  };
 
+  # -- D-Bus ------------------------------------------------------------------
+  services.dbus.enable = true;
 
-services.dbus.enable = true;
-
-qt = {
-  enable = true;
-  platformTheme = "gtk2";
-  style = "gtk2";
-};
-
-
-  xdg.portal = {
+  # -- Qt / GTK theming -------------------------------------------------------
+  qt = {
     enable        = true;
-    extraPortals  = [ pkgs.xdg-desktop-portal-gtk ];
-    config.x-cinnamon.default = [ "xapp" "gtk" ];
+    platformTheme = "kde";
+    style         = "breeze";
+  };
+
+  # -- XDG portals ------------------------------------------------------------
+  xdg.portal = {
+    enable       = true;
+    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
   };
 
   # -- Graphics (base — GPU drivers set per host) -----------------------------
@@ -106,18 +104,18 @@ qt = {
     pulse.enable      = true;
   };
 
-# -- Printing ---------------------------------------------------------------
+  # -- Printing ---------------------------------------------------------------
   services.printing = {
-    enable = true;
+    enable  = true;
     browsing = false;
-    drivers = with pkgs; [ 
+    drivers = with pkgs; [
       brlaser
     ];
   };
 
-services.avahi = {
+  services.avahi = {
     enable       = true;
-    nssmdns4     = true; # This allows you to find "printer.local"
+    nssmdns4     = true;
     openFirewall = true;
   };
 
@@ -136,20 +134,16 @@ services.avahi = {
     extraGroups  = [ "networkmanager" "wheel" "dialout" "plugdev" ];
   };
 
-services.udev.extraRules = ''
-
-  SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0666", GROUP="dialout", ENV{ID_MM_DEVICE_IGNORE}="1"
-  
-  ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ENV{ID_MM_DEVICE_IGNORE}="1"
-'';
-
+  services.udev.extraRules = ''
+    SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0666", GROUP="dialout", ENV{ID_MM_DEVICE_IGNORE}="1"
+    ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", ENV{ID_MM_DEVICE_IGNORE}="1"
+  '';
 
   # -- Programs ---------------------------------------------------------------
   programs.steam.enable = true;
   programs.nano.enable  = false;
 
   # -- System Packages --------------------------------------------------------
-  # Keep lean — user packages live in home.nix
   environment.systemPackages = with pkgs; [
     git
     neovim
@@ -158,8 +152,5 @@ services.udev.extraRules = ''
     btop
     bluez
     busybox
-    adwaita-icon-theme
-
-
   ];
 }

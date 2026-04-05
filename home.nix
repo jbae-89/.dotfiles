@@ -6,16 +6,6 @@
   home.homeDirectory = "/home/josh";
   home.stateVersion = "26.05";
 
-
-nixpkgs.overlays = [
-  (self: super: {
-    gdal = super.callPackage "${super.path}/pkgs/by-name/gd/gdal/package.nix" {
-      libecwj2 = self.libecwj2;
-    };
-  })
-];
-
-
   # -- User Packages ----------------------------------------------------------
   home.packages = with pkgs; [
 
@@ -55,7 +45,7 @@ nixpkgs.overlays = [
     tinymist
 
     # Nix
-    nixfmt-rfc-style
+    nixfmt
     nixd
 
     # -- Creative / Maker -----------------------------------------------------
@@ -117,10 +107,8 @@ nixpkgs.overlays = [
 settings = {
         Keywords = "shell;prompt;command;commandline;cmd;console;";
       };
-    };  # <-- closes kitty entry
-  };    # <-- closes xdg.desktopEntries
-
-  xdg.configFile."nixpkgs/config.nix".text = "{ allowUnfree = true; }";
+    };
+  };
 
   # -- Terminal: Kitty --------------------------------------------------------
   programs.kitty = {
@@ -136,21 +124,6 @@ settings = {
       "ctrl+c" = "copy_or_interrupt";
       "ctrl+v" = "paste_from_clipboard";
 
-    };
-  };
-
-  # -- Shell: Bash ------------------------------------------------------------
-  programs.bash = {
-    enable = true;
-    shellAliases = {
-      # Rebuild this machine — run from inside your dotfiles directory
-      rebuild = "sudo nixos-rebuild switch --flake .#$(hostname)";
-      rebuild-boot = "sudo nixos-rebuild boot --flake .#$(hostname)";
-      nix-clean = "sudo nix-collect-garbage -d";
-
-      # Shortcuts
-      ll = "ls -lah";
-      ".." = "cd ..";
     };
   };
 
