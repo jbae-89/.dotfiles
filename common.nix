@@ -109,6 +109,7 @@ qt = {
 # -- Printing ---------------------------------------------------------------
   services.printing = {
     enable = true;
+    browsing = false;
     drivers = with pkgs; [ 
       brlaser
     ];

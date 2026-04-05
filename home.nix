@@ -4,7 +4,7 @@
 {
   home.username = "josh";
   home.homeDirectory = "/home/josh";
-  home.stateVersion = "25.11";
+  home.stateVersion = "26.05";
 
 
 nixpkgs.overlays = [
@@ -45,9 +45,9 @@ nixpkgs.overlays = [
 
     (python313.withPackages (ps: [
       ps.pillow
-      ps.rasterio
-      ps.numpy
-      ps.matplotlib
+      # ps.rasterio
+      # ps.numpy
+      # ps.matplotlib
     ]))
 
     # Typst

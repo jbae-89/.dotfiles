@@ -6,10 +6,10 @@
   # };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -41,7 +41,11 @@
           {
             environment.systemPackages = [
               (nixpkgs.legacyPackages.x86_64-linux.qgis.override {
-                extraPythonPackages = ps: [ ps.scipy ps.matplotlib ];
+                extraPythonPackages = ps: [
+                  ps.matplotlib
+                  ps.rasterio
+                  ps.numpy
+                  ];
               })
             ];
           }
