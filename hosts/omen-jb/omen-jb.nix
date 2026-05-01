@@ -6,7 +6,7 @@
 
   # -- Kernel -----------------------------------------------------------------
   boot.kernelPackages = pkgs.linuxPackages_6_12;
-
+  boot.blacklistedKernelModules = [ "spd5118" ];
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"

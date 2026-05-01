@@ -79,11 +79,11 @@
   };
 
   # -- XDG portals ------------------------------------------------------------
-  xdg.portal = {
-    enable       = true;
-    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
-  };
-
+xdg.portal = {
+  enable = true;
+  extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  config.common.default = "kde";
+};
   # -- Graphics (base — GPU drivers set per host) -----------------------------
   hardware.graphics.enable = true;
 
@@ -131,8 +131,13 @@
   users.users.josh = {
     isNormalUser = true;
     description  = "josh";
-    extraGroups  = [ "networkmanager" "wheel" "dialout" "plugdev" ];
+    extraGroups  = [ "networkmanager" "wheel" "dialout" "plugdev" "vboxusers"];
   };
+
+
+  # -- Virtualization ---------------------------------------------------------
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
 
   services.udev.extraRules = ''
     SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", ATTRS{idProduct}=="1001", MODE="0666", GROUP="dialout", ENV{ID_MM_DEVICE_IGNORE}="1"

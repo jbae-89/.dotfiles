@@ -12,11 +12,13 @@
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "mem_sleep_default=deep"
   ];
 
   boot.initrd.systemd.enable = true;
 
   # -- NVIDIA -----------------------------------------------------------------
+  
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
@@ -27,16 +29,15 @@
     powerManagement.enable = true;
   };
 
-boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
 
 
   # -- Host-specific packages -------------------------------------------------
   environment.systemPackages = with pkgs; [
-    #bambu-studio
-    #orca-slicer
-    # Uncomment to open LAN ports for Bambu Studio:
-    # (handled via networking.firewall.extraCommands if needed)
+  vulkan-loader
+  vulkan-tools
+  vulkan-validation-layers
   ];
 
 networking.firewall = {

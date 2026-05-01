@@ -18,9 +18,11 @@
     libreoffice
     trilium-desktop
     drawio
+    pdf4qt
 
     # -- Media ----------------------------------------------------------------
     vlc
+    spotify
 
     # -- Development ----------------------------------------------------------
     vscode
@@ -53,7 +55,6 @@
     freecad
     inkscape-with-extensions
     gimp-with-plugins
-    bambu-studio
 
     # -- System Utilities -----------------------------------------------------
     
@@ -70,8 +71,11 @@
     # -- Torrenting -----------------------------------------------------------
     deluge-gtk
 
-    # -- Virtualisation -------------------------------------------------------
-    virtualbox
+    # # -- Virtualisation -------------------------------------------------------
+    # virtualbox
+    wine
+    winetricks
+    bottles
 
     # -- Fonts ----------------------------------------------------------------
     source-sans-pro
