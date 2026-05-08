@@ -1,5 +1,5 @@
 # home.nix — Home Manager config for josh (shared across all hosts)
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-2411, ... }:
 
 {
   home.username = "josh";
@@ -37,10 +37,22 @@
 
     (python313.withPackages (ps: [
       ps.pillow
-      # ps.rasterio
-      # ps.numpy
-      # ps.matplotlib
+      ps.numpy
+      ps.pyqt5
+      ps.pyopengl
+      ps.matplotlib
+      ps.gradio
+      ps.opencv-python
+      ps.torch
+      ps.torchvision
+      # ps.xformers
     ]))
+
+    # Removed for freecad testing but may be needed for QGIS
+    # qt5.qtbase
+    # qt5.qtwayland
+    # libsForQt5.qt5.qtbase
+
 
     # Typst
     typst
@@ -52,10 +64,13 @@
 
     # -- Creative / Maker -----------------------------------------------------
     blender
-    freecad
+
+    # freecad
+
     inkscape-with-extensions
     gimp-with-plugins
-
+    openscad
+    
     # -- System Utilities -----------------------------------------------------
     
     # -- System Utilities -----------------------------------------------------
@@ -75,7 +90,7 @@
     # virtualbox
     wine
     winetricks
-    bottles
+    # bottles
 
     # -- Fonts ----------------------------------------------------------------
     source-sans-pro
@@ -130,6 +145,19 @@ settings = {
 
     };
   };
+# -- Bash Aliases -------------------------------------------------------------
+programs.bash = {
+  enable = true;
+  shellAliases = {
+    rebuild      = "sudo nixos-rebuild switch --flake .#$(hostname)";
+    rebuild-boot = "sudo nixos-rebuild boot --flake .#$(hostname)";
+    nix-clean    = "sudo nix-collect-garbage -d";
+    ll           = "ls -lah";
+    ".."         = "cd ..";
+    rayforge = "flatpak run org.rayforge.rayforge";
+  };
+};
+
 
   # -- Git --------------------------------------------------------------------
   programs.git = {

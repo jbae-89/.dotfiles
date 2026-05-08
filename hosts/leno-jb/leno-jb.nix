@@ -5,7 +5,7 @@
   networking.hostName = "leno-jb";
 
   # -- Kernel -----------------------------------------------------------------
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
 
   # -- Integrated Graphics (Intel) --------------------------------------------
   hardware.graphics.extraPackages = with pkgs; [

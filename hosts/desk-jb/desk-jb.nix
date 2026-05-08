@@ -6,7 +6,7 @@
   networking.hostName = "desk-jb";
 
   # -- Kernel -----------------------------------------------------------------
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
 
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
@@ -14,6 +14,10 @@
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "mem_sleep_default=deep"
   ];
+
+
+  boot.resumeDevice = "/dev/disk/by-uuid/92fa38af-7c84-4d2a-9075-c6207912e1f4";
+
 
   boot.initrd.systemd.enable = true;
 
@@ -26,11 +30,22 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     powerManagement.finegrained = false;
     modesetting.enable = true;
+    nvidiaSettings = true;
     powerManagement.enable = true;
   };
 
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
 
+hardware.graphics = {
+  enable = true;
+  enable32Bit = true;
+
+  extraPackages = with pkgs; [
+    nvidia-vaapi-driver
+  # Sim issue in FreeCAD
+    # pkgs.mesa
+  ];
+};
 
 
   # -- Host-specific packages -------------------------------------------------
@@ -38,7 +53,10 @@
   vulkan-loader
   vulkan-tools
   vulkan-validation-layers
+  egl-wayland
   ];
+
+
 
 networking.firewall = {
   enable = true;

@@ -5,8 +5,8 @@
   networking.hostName = "omen-jb";
 
   # -- Kernel -----------------------------------------------------------------
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.blacklistedKernelModules = [ "spd5118" ];
+  boot.kernelPackages = pkgs.linuxPackages_6_18;
+  boot.blacklistedKernelModules = [ "spd5118" "ucsi_acpi"];
   boot.kernelParams = [
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
