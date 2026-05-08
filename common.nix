@@ -66,6 +66,7 @@
     XCURSOR_SIZE  = "24";
     XCURSOR_THEME = "breeze_cursors";
     GDAL_DRIVER_PATH = "/run/current-system/sw/lib/gdalplugins";
+    LIBGL_ALWAYS_SOFTWARE = "0";
   };
 
   # -- D-Bus ------------------------------------------------------------------
@@ -124,6 +125,9 @@ xdg.portal = {
   # -- VPN --------------------------------------------------------------------
   services.ivpn.enable = true;
 
+  # -- Flatpak ----------------------------------------------------------------
+  services.flatpak.enable = true;
+
   # -- Power (baseline — laptops extend this in their host file) --------------
   powerManagement.enable = true;
 
@@ -147,6 +151,7 @@ xdg.portal = {
   # -- Programs ---------------------------------------------------------------
   programs.steam.enable = true;
   programs.nano.enable  = false;
+  programs.kdeconnect.enable = true;
 
   # -- System Packages --------------------------------------------------------
   environment.systemPackages = with pkgs; [
@@ -157,5 +162,7 @@ xdg.portal = {
     btop
     bluez
     busybox
+    adwaita-icon-theme
+    hicolor-icon-theme
   ];
 }
