@@ -46,6 +46,8 @@
       ps.torch
       ps.torchvision
       # ps.xformers
+      ps.requests
+      ps.mkdocs
     ]))
 
     # Removed for freecad testing but may be needed for QGIS
@@ -71,8 +73,14 @@
     gimp-with-plugins
     openscad
     
-    # -- System Utilities -----------------------------------------------------
-    
+    # -- RF -----------------------------------------------------
+    sdrpp
+    gnuradio
+    gnuradioPackages.osmosdr
+    libiio
+    libad9361
+    # pyadi-iio
+
     # -- System Utilities -----------------------------------------------------
     btop
     htop

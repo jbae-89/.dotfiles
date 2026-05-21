@@ -12,17 +12,25 @@
     "nvidia-drm.modeset=1"
     "nvidia-drm.fbdev=1"
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    "mem_sleep_default=deep"
+    # mem_sleep_default=deep removed — sleep disabled entirely
   ];
 
-
-  boot.resumeDevice = "/dev/disk/by-uuid/92fa38af-7c84-4d2a-9075-c6207912e1f4";
-
+  # boot.resumeDevice removed — only needed for hibernate
 
   boot.initrd.systemd.enable = true;
 
+  # -- Sleep ------------------------------------------------------------------
+  # Disable all sleep/suspend/hibernate — avoids NVIDIA wake hang
+systemd.sleep.settings = {
+  Sleep = {
+    AllowSuspend = false;
+    AllowHibernation = false;
+    AllowHybridSleep = false;
+    AllowSuspendThenHibernate = false;
+  };
+};
+
   # -- NVIDIA -----------------------------------------------------------------
-  
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
@@ -31,7 +39,7 @@
     powerManagement.finegrained = false;
     modesetting.enable = true;
     nvidiaSettings = true;
-    powerManagement.enable = true;
+    powerManagement.enable = false;  # GPU suspend save/restore; not needed without sleep
   };
 
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
